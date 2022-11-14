@@ -6,4 +6,7 @@
 ### to start: 
 - pip install -r requirements.txt
 - .env_example
+- docker-compose up -d
+- makemigrations, migrate
+- runserver
 
