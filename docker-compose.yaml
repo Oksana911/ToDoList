@@ -8,11 +8,14 @@ services:
       - 80:80
     depends_on:
       - api
+    restart: always
 
   api:
 #    platform: linux/amd64
     build:
       context: .
+      dockerfile: Dockerfile
+    image: oksana911/oefremova_mytodolist
     ports:
       - 8000:8000
     env_file:
@@ -28,6 +31,7 @@ services:
   migrations:
     build:
       context: .
+    image: oksana911/oefremova_mytodolist
     volumes:
       - ./.env:/code/.env
     env_file:
