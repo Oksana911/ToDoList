@@ -46,4 +46,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd mytodolist_ci  
-            echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
+            docker-compose up -d
