@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - 80:80
+    depends_on:
+      - api
+    restart: always
+
+  api:
+    image: oksana911/oefremova_mytodolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    volumes:
+      - ./.env:/code/.env
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  migrations:
+    image: oksana911/oefremova_mytodolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    volumes:
+      - ./.env:/code/.env
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: python manage.py migrate
+
+  db:
+    image: postgres:12.4-alpine
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: always
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+
