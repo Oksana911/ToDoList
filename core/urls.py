@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from core.views import SignUpView
+from core.views import SignUpView, LoginView, ProfileView
 
 # from rest_framework_nested import routers
 
@@ -14,6 +14,8 @@ from core.views import SignUpView
 urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
     path('signup', SignUpView.as_view(), name='signup'),
+    path('login', LoginView.as_view(), name='login'),
+    path('profile', ProfileView.as_view(), name='profile'),
 ]
 
 
