@@ -13,7 +13,7 @@ from core.views import SignUpView
 
 urlpatterns = [
     # path('api-auth/', include('rest_framework.urls')),
-    path('signup/', SignUpView.as_view(), name='signup'),
+    path('signup', SignUpView.as_view(), name='signup'),
 ]
 
 
