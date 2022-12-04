@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from core.models import User
-from core.serializers import SignUpSerializer, LoginSerializer, ProfileSerializer
+from core.serializers import SignUpSerializer, LoginSerializer, ProfileSerializer, UpdatePasswordSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -34,11 +34,18 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    @ensure_csrf_cookie
     def get_object(self):
         return self.request.user
 
-    @ensure_csrf_cookie
     def delete(self, request, *args, **kwargs):
         logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UpdatePasswordView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdatePasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
