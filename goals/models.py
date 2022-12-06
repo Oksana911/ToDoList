@@ -2,7 +2,17 @@ from django.db import models
 from core.models import User
 
 
-class GoalCategory(models.Model):
+# aбстрактный класс, описывающий поля created и updated
+# остальные модели сущностей наследуются от него
+class DatesModelMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Дата последнего обновления')
+
+
+class GoalCategory(DatesModelMixin):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
@@ -10,8 +20,6 @@ class GoalCategory(models.Model):
     title = models.CharField(verbose_name='Название', max_length=255)
     user = models.ForeignKey(User, verbose_name='Автор', on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name='Удалена', default=False)
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Дата последнего обновления')
 
 
 ######################################
@@ -30,7 +38,7 @@ class Priority(models.IntegerChoices):
     critical = 4, 'Критический'
 
 
-class Goal(models.Model):
+class Goal(DatesModelMixin):
     class Meta:
         verbose_name = 'Цель'
         verbose_name_plural = 'Цели'
