@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'social_django',
     'goals',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -157,3 +158,9 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+
+# settings rest_framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
