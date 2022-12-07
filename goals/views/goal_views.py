@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from rest_framework import filters, permissions
 from rest_framework.pagination import LimitOffsetPagination
 from goals.filters import GoalDateFilter
-from goals.models import Goal, Status
+from goals.models import Goal
 from goals.serializers.goal import GoalCreateSerializer, GoalSerializer
 
 
@@ -43,6 +43,6 @@ class GoalView(RetrieveUpdateDestroyAPIView):
         return self.model.objects.filter(user=self.request.user).exclude(status=self.model.Status.archived)
 
     def perform_destroy(self, instance):
-        instance.status = Status.archived
+        instance.status = self.model.Status.archived
         instance.save()
         return instance
