@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions, filters
 from rest_framework.pagination import LimitOffsetPagination
@@ -17,12 +18,13 @@ class GoalCategoryListView(ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = LimitOffsetPagination
     filter_backends = [
+        DjangoFilterBackend,
         filters.OrderingFilter,
         filters.SearchFilter,
     ]
-    ordering_fields = ["title", "created"]
-    ordering = ["title"]
-    search_fields = ["title"]
+    filterset_fields = ('created',)
+    ordering_fields = ('title', 'created',)
+    search_fields = ('title',)
 
     def get_queryset(self):
         return GoalCategory.objects.filter(
