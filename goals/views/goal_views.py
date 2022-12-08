@@ -26,8 +26,8 @@ class GoalListView(ListAPIView):
     ]
     filterset_class = GoalDateFilter
     # filterset_fields = ('due_date',)
-    ordering_fields = ('title', 'created', 'due_date')
-    ordering = ('title',)
+    ordering_fields = ('-priority', 'created', 'due_date')
+    ordering = ('-priority',)
     search_fields = ('title',)
 
     def get_queryset(self):
