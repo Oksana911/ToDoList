@@ -12,11 +12,11 @@
     },
     "version": "v1"
   },
-  "host": "127.0.0.1:8000",
+  "host": "51.250.69.194:8081",
   "schemes": [
     "http"
   ],
-  "basePath": "/core",
+  "basePath": "/",
   "consumes": [
     "application/json"
   ],
@@ -34,9 +34,9 @@
     }
   ],
   "paths": {
-    "/login/": {
+    "/core/login": {
       "post": {
-        "operationId": "login_create",
+        "operationId": "core_login_create",
         "description": "",
         "parameters": [
           {
@@ -57,14 +57,14 @@
           }
         },
         "tags": [
-          "login"
+          "core"
         ]
       },
       "parameters": []
     },
-    "/profile/": {
+    "/core/profile": {
       "get": {
-        "operationId": "profile_read",
+        "operationId": "core_profile_read",
         "description": "",
         "parameters": [],
         "responses": {
@@ -76,11 +76,11 @@
           }
         },
         "tags": [
-          "profile"
+          "core"
         ]
       },
       "put": {
-        "operationId": "profile_update",
+        "operationId": "core_profile_update",
         "description": "",
         "parameters": [
           {
@@ -101,11 +101,11 @@
           }
         },
         "tags": [
-          "profile"
+          "core"
         ]
       },
       "patch": {
-        "operationId": "profile_partial_update",
+        "operationId": "core_profile_partial_update",
         "description": "",
         "parameters": [
           {
@@ -126,11 +126,11 @@
           }
         },
         "tags": [
-          "profile"
+          "core"
         ]
       },
       "delete": {
-        "operationId": "profile_delete",
+        "operationId": "core_profile_delete",
         "description": "",
         "parameters": [],
         "responses": {
@@ -139,14 +139,14 @@
           }
         },
         "tags": [
-          "profile"
+          "core"
         ]
       },
       "parameters": []
     },
-    "/signup/": {
+    "/core/signup": {
       "post": {
-        "operationId": "signup_create",
+        "operationId": "core_signup_create",
         "description": "",
         "parameters": [
           {
@@ -167,14 +167,14 @@
           }
         },
         "tags": [
-          "signup"
+          "core"
         ]
       },
       "parameters": []
     },
-    "/update_password/": {
+    "/core/update_password": {
       "put": {
-        "operationId": "update_password_update",
+        "operationId": "core_update_password_update",
         "description": "",
         "parameters": [
           {
@@ -195,11 +195,11 @@
           }
         },
         "tags": [
-          "update_password"
+          "core"
         ]
       },
       "patch": {
-        "operationId": "update_password_partial_update",
+        "operationId": "core_update_password_partial_update",
         "description": "",
         "parameters": [
           {
@@ -220,10 +220,629 @@
           }
         },
         "tags": [
-          "update_password"
+          "core"
         ]
       },
       "parameters": []
+    },
+    "/goals/goal/create": {
+      "post": {
+        "operationId": "goals_goal_create_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GoalCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GoalCreate"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": []
+    },
+    "/goals/goal/list": {
+      "get": {
+        "operationId": "goals_goal_list_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "due_date__lte",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "due_date__gte",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "category__in",
+            "in": "query",
+            "description": "Multiple values may be separated by commas.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status__in",
+            "in": "query",
+            "description": "Multiple values may be separated by commas.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "priority__in",
+            "in": "query",
+            "description": "Multiple values may be separated by commas.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Goal"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": []
+    },
+    "/goals/goal/{id}": {
+      "get": {
+        "operationId": "goals_goal_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Goal"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "put": {
+        "operationId": "goals_goal_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Goal"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Goal"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "patch": {
+        "operationId": "goals_goal_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Goal"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Goal"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "delete": {
+        "operationId": "goals_goal_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/goals/goal_category/create": {
+      "post": {
+        "operationId": "goals_goal_category_create_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GoalCategoryCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GoalCategoryCreate"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": []
+    },
+    "/goals/goal_category/list": {
+      "get": {
+        "operationId": "goals_goal_category_list_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/GoalCategory"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": []
+    },
+    "/goals/goal_category/{id}": {
+      "get": {
+        "operationId": "goals_goal_category_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GoalCategory"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "put": {
+        "operationId": "goals_goal_category_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GoalCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GoalCategory"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "patch": {
+        "operationId": "goals_goal_category_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GoalCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GoalCategory"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "delete": {
+        "operationId": "goals_goal_category_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/goals/goal_comment/create": {
+      "post": {
+        "operationId": "goals_goal_comment_create_create",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CommentCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CommentCreate"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": []
+    },
+    "/goals/goal_comment/list": {
+      "get": {
+        "operationId": "goals_goal_comment_list_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Comment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": []
+    },
+    "/goals/goal_comment/{id}": {
+      "get": {
+        "operationId": "goals_goal_comment_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "put": {
+        "operationId": "goals_goal_comment_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "patch": {
+        "operationId": "goals_goal_comment_partial_update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "delete": {
+        "operationId": "goals_goal_comment_delete",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "goals"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
     }
   },
   "definitions": {
@@ -348,6 +967,289 @@
           "title": "New password",
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "GoalCreate": {
+      "required": [
+        "title",
+        "category"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "created": {
+          "title": "\u0414\u0430\u0442\u0430 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated": {
+          "title": "\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "title": {
+          "title": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "description": {
+          "title": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435",
+          "type": "string",
+          "x-nullable": true
+        },
+        "due_date": {
+          "title": "\u0414\u0430\u0442\u0430 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date",
+          "x-nullable": true
+        },
+        "status": {
+          "title": "\u0421\u0442\u0430\u0442\u0443\u0441",
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "priority": {
+          "title": "\u041f\u0440\u0438\u043e\u0440\u0438\u0442\u0435\u0442",
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "category": {
+          "title": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f",
+          "type": "integer"
+        }
+      }
+    },
+    "Goal": {
+      "required": [
+        "title",
+        "category"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "created": {
+          "title": "\u0414\u0430\u0442\u0430 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated": {
+          "title": "\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "title": {
+          "title": "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "description": {
+          "title": "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435",
+          "type": "string",
+          "x-nullable": true
+        },
+        "due_date": {
+          "title": "\u0414\u0430\u0442\u0430 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date",
+          "x-nullable": true
+        },
+        "status": {
+          "title": "\u0421\u0442\u0430\u0442\u0443\u0441",
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "priority": {
+          "title": "\u041f\u0440\u0438\u043e\u0440\u0438\u0442\u0435\u0442",
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "category": {
+          "title": "\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f",
+          "type": "integer"
+        }
+      }
+    },
+    "GoalCategoryCreate": {
+      "required": [
+        "title"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "created": {
+          "title": "\u0414\u0430\u0442\u0430 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated": {
+          "title": "\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "title": {
+          "title": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "is_deleted": {
+          "title": "\u0423\u0434\u0430\u043b\u0435\u043d\u0430",
+          "type": "boolean"
+        }
+      }
+    },
+    "GoalCategory": {
+      "required": [
+        "title"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "created": {
+          "title": "\u0414\u0430\u0442\u0430 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated": {
+          "title": "\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "title": {
+          "title": "\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "is_deleted": {
+          "title": "\u0423\u0434\u0430\u043b\u0435\u043d\u0430",
+          "type": "boolean"
+        }
+      }
+    },
+    "CommentCreate": {
+      "required": [
+        "text",
+        "goal"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "created": {
+          "title": "\u0414\u0430\u0442\u0430 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated": {
+          "title": "\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "text": {
+          "title": "\u0422\u0435\u043a\u0441\u0442",
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "title": "\u0426\u0435\u043b\u044c",
+          "type": "integer"
+        }
+      }
+    },
+    "Comment": {
+      "required": [
+        "text"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "created": {
+          "title": "\u0414\u0430\u0442\u0430 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated": {
+          "title": "\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0435\u0433\u043e \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "text": {
+          "title": "\u0422\u0435\u043a\u0441\u0442",
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "title": "\u0426\u0435\u043b\u044c",
+          "type": "integer",
+          "readOnly": true
         }
       }
     }
