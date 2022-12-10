@@ -3,8 +3,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, filters
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
 from rest_framework.pagination import LimitOffsetPagination
-
-from goals.filters import GoalDateFilter
 from goals.models import Board, Goal
 from goals.permissions import BoardPermissions
 from goals.serializers.board import BoardSerializer, BoardCreateSerializer, BoardListSerializer
@@ -30,7 +28,7 @@ class BoardListView(ListAPIView):
     search_fields = ('title',)
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        return self.model.objects.filter(participants__user=self.request.user, is_deleted=False)
 
 
 class BoardView(RetrieveUpdateDestroyAPIView):
