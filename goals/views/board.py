@@ -17,7 +17,7 @@ class BoardCreateView(CreateAPIView):
 class BoardListView(ListAPIView):
     model = Board
     serializer_class = BoardListSerializer
-    permission_classes = [permissions.IsAuthenticated, BoardPermissions]
+    permission_classes = [BoardPermissions]
     pagination_class = LimitOffsetPagination
 
     filter_backends = [
@@ -33,7 +33,7 @@ class BoardListView(ListAPIView):
 
 class BoardView(RetrieveUpdateDestroyAPIView):
     model = Board
-    permission_classes = [permissions.IsAuthenticated, BoardPermissions]
+    permission_classes = [BoardPermissions]
     serializer_class = BoardSerializer
 
     def get_queryset(self):
