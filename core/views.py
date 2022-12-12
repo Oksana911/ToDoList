@@ -25,7 +25,7 @@ class LoginView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         login(request, user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(ProfileSerializer(user).data, status=status.HTTP_201_CREATED)
 
 
 # @ensure_csrf_cookie
