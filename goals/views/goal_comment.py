@@ -3,6 +3,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from rest_framework import filters, permissions
 from rest_framework.pagination import LimitOffsetPagination
 from goals.models import GoalComment
+from goals.permissions import CommentPermission
 from goals.serializers.goal_comment import CommentCreateSerializer, CommentSerializer
 
 
@@ -15,7 +16,7 @@ class CommentCreateView(CreateAPIView):
 class CommentsListView(ListAPIView):
     model = GoalComment
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [CommentPermission]
     pagination_class = LimitOffsetPagination
 
     filter_backends = [
@@ -26,13 +27,13 @@ class CommentsListView(ListAPIView):
     ordering = ('-created',)
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        return self.model.objects.filter(goal__category__board__participants__user=self.request.user)
 
 
 class CommentView(RetrieveUpdateDestroyAPIView):
     model = GoalComment
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [CommentPermission]
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        return self.model.objects.filter(goal__category__board__participants__user=self.request.user)

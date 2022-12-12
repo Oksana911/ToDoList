@@ -4,6 +4,7 @@ from rest_framework import filters, permissions
 from rest_framework.pagination import LimitOffsetPagination
 from goals.filters import GoalDateFilter
 from goals.models import Goal
+from goals.permissions import GoalPermission
 from goals.serializers.goal import GoalCreateSerializer, GoalSerializer
 
 
@@ -16,7 +17,7 @@ class GoalCreateView(CreateAPIView):
 class GoalListView(ListAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [GoalPermission]
     pagination_class = LimitOffsetPagination
 
     filter_backends = [
@@ -25,22 +26,23 @@ class GoalListView(ListAPIView):
         filters.OrderingFilter,
     ]
     filterset_class = GoalDateFilter
-    # filterset_fields = ('due_date',)
     ordering_fields = ('-priority', 'due_date')
     ordering = ('-priority',)
     search_fields = ('title',)
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user).exclude(status=self.model.Status.archived)
+        return self.model.objects.filter(category__board__participants__user=self.request.user
+                                         ).exclude(status=self.model.Status.archived)
 
 
 class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [GoalPermission]
 
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user).exclude(status=self.model.Status.archived)
+        return self.model.objects.filter(category__board__participants__user=self.request.user
+                                         ).exclude(status=self.model.Status.archived)
 
     def perform_destroy(self, instance):
         instance.status = self.model.Status.archived

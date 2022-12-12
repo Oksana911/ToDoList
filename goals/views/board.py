@@ -44,7 +44,5 @@ class BoardView(RetrieveUpdateDestroyAPIView):
             instance.is_deleted = True
             instance.save()
             instance.categories.update(is_deleted=True)
-            Goal.objects.filter(category__board=instance).update(
-                status=Goal.Status.archived
-            )
+            Goal.objects.filter(category__board=instance).update(status=Goal.Status.archived)
         return instance

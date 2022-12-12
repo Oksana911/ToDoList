@@ -12,17 +12,15 @@ class GoalCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id', 'created', 'updated', 'user')
 
-    def validate(self, attrs):
+    def validate(self, value):
         role_use = BoardParticipant.objects.filter(
-            user=attrs.get('user'),
-            board=attrs.get('category').board,
+            user=value.get('user'),
+            board=value.get('category').board,
             role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
         )
-
         if not role_use:
             raise ValidationError('not allowed')
-
-        return attrs
+        return value
 
 
 class GoalSerializer(serializers.ModelSerializer):
@@ -38,5 +36,4 @@ class GoalSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('not allowed in deleted category')
         if value.user != self.context['request'].user:
             raise serializers.ValidationError('not owner of category')
-
         return value
