@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.serializers import ProfileSerializer
-from goals.models import GoalCategory
+from goals.models import GoalCategory, BoardParticipant
 
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
@@ -10,6 +10,18 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
         model = GoalCategory
         fields = '__all__'
         read_only_fields = ('id', 'created', 'updated', 'user')
+
+    def validate_board(self, value):
+        if value.is_deleted:
+            raise serializers.ValidationError('not allowed in deleted category')
+
+        if not BoardParticipant.objects.filter(
+            board=value,
+            role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
+            user=self.context['request'].user
+        ).exists():
+            raise serializers.ValidationError('not allowed for reader')
+        return value
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):

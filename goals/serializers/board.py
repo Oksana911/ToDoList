@@ -21,19 +21,13 @@ class BoardCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = validated_data.pop("user")
         board = Board.objects.create(**validated_data)
-        BoardParticipant.objects.create(
-            user=user, board=board, role=BoardParticipant.Role.owner
-        )
+        BoardParticipant.objects.create(user=user, board=board, role=BoardParticipant.Role.owner)
         return board
 
 
 class BoardParticipantSerializer(serializers.ModelSerializer):
-    role = serializers.ChoiceField(
-        required=True, choices=BoardParticipant.Role.choices
-    )
-    user = serializers.SlugRelatedField(
-        slug_field="username", queryset=User.objects.all()
-    )
+    role = serializers.ChoiceField(required=True, choices=BoardParticipant.Role.choices)
+    user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
 
     class Meta:
         model = BoardParticipant
@@ -61,13 +55,8 @@ class BoardSerializer(serializers.ModelSerializer):
                 if old_participant.user_id not in new_by_id:
                     old_participant.delete()
                 else:
-                    if (
-                            old_participant.role
-                            != new_by_id[old_participant.user_id]["role"]
-                    ):
-                        old_participant.role = new_by_id[old_participant.user_id][
-                            "role"
-                        ]
+                    if old_participant.role != new_by_id[old_participant.user_id]["role"]:
+                        old_participant.role = new_by_id[old_participant.user_id]["role"]
                         old_participant.save()
                     new_by_id.pop(old_participant.user_id)
             for new_part in new_by_id.values():
@@ -79,8 +68,3 @@ class BoardSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-    """Необходимо реализовать возможность добавления участников.
-Необходимо реализовать возможность удаления участников (владельцу себя удалить нельзя).
-Необходимо реализовать возможность изменения участникам уровня доступа (кроме себя — владелец всегда остается владельцем)."""
-
