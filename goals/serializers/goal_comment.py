@@ -12,9 +12,6 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created', 'updated', 'user')
 
     def validate(self, value):
-        if value.is_deleted:
-            raise serializers.ValidationError('not allowed in deleted category')
-
         if not BoardParticipant.objects.filter(
                 board=value,
                 role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
