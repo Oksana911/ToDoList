@@ -13,7 +13,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, value):
         if not BoardParticipant.objects.filter(
-                board=value,
+                board=value['goal'].category.board,
                 role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
                 user=self.context['request'].user
         ).exists():
