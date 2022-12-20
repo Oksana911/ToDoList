@@ -26,6 +26,7 @@ class GoalCategoryListView(ListAPIView):
     ]
     filterset_fields = ('board',)
     ordering_fields = ('title', 'created',)
+    ordering = ('title', 'created',)
     search_fields = ('title',)
 
     def get_queryset(self):
