@@ -3,6 +3,6 @@ from core.models import User
 
 
 class TgUser(models.Model):
-    telegram_chat_id = models.IntegerField()
-    telegram_user_ud = models.IntegerField()
+    tg_chat_id = models.IntegerField()
+    tg_user_id = models.IntegerField()
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
