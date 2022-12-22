@@ -54,4 +54,3 @@ jobs:
           script: |
             cd mytodolist_ci  
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
-            docker system prune -a -f
