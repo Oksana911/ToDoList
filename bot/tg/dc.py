@@ -7,7 +7,9 @@ from marshmallow import EXCLUDE
 @dataclass
 class Chat:
     id: int
-    first_name: str
+    first_name: str | None
+    last_name: str | None
+    username: str | None
     type: str
 
     class Meta:
@@ -19,6 +21,7 @@ class MessageFrom:
     id: int
     is_bot: bool
     first_name: str
+    last_name: str | None
     username: str = ''
 
     class Meta:
@@ -29,8 +32,8 @@ class MessageFrom:
 class Message:
     message_id: int
     date: int
-    text: str
-    from_: MessageFrom = field(metadata={"data_key": "from"})
+    text: str | None
+    from_: MessageFrom = field(metadata={'data_key': 'from'})
     chat: Chat
 
     class Meta:
