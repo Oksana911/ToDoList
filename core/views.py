@@ -1,10 +1,8 @@
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.contrib.auth import login, logout
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-
 from core.models import User
 from core.serializers import SignUpSerializer, LoginSerializer, ProfileSerializer, UpdatePasswordSerializer
 
@@ -14,7 +12,6 @@ class SignUpView(CreateAPIView):
     serializer_class = SignUpSerializer
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
 class LoginView(GenericAPIView):
     queryset = User.objects.all()
     serializer_class = LoginSerializer
@@ -28,7 +25,6 @@ class LoginView(GenericAPIView):
         return Response(ProfileSerializer(user).data, status=status.HTTP_201_CREATED)
 
 
-# @ensure_csrf_cookie
 class ProfileView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
