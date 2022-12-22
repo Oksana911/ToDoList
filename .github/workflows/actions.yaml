@@ -26,6 +26,8 @@ jobs:
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_KEY }}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_VK_OAUTH2_SECRET }}
+      TG_TOKEN: ${{ secrets.TG_TOKEN }}
+
     steps:
       - name: clone code
         uses: actions/checkout@v2
@@ -52,3 +54,4 @@ jobs:
           script: |
             cd mytodolist_ci  
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
+            docker system prune -a -f

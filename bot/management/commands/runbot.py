@@ -2,11 +2,12 @@ from django.core.management.base import BaseCommand
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from bot.tg.dc import Message
+from todolist.settings import TG_TOKEN
 
 
 class Command(BaseCommand):
     help = 'Запуск телеграмм-бота'
-    tg_client = TgClient("5964107256:AAEiTpzP8gyyE1RTrfJL6TJcduFgpz1Y7i4")
+    tg_client = TgClient(TG_TOKEN)
 
     def handle_user(self, msg: Message):
         """ Проверка наличия пользователя в БД """

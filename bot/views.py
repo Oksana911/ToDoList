@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from bot.models import TgUser
 from bot.serializers import TgUserSerializer
 from bot.tg.client import TgClient
+from todolist.settings import TG_TOKEN
 
 
 class BotView(UpdateAPIView):
@@ -16,7 +17,7 @@ class BotView(UpdateAPIView):
     def patch(self, request, *args, **kwargs):
         data = self.serializer_class(request.data).data
 
-        tg_client = TgClient("5964107256:AAEiTpzP8gyyE1RTrfJL6TJcduFgpz1Y7i4")
+        tg_client = TgClient(TG_TOKEN)
         tg_user = TgUser.objects.filter(verification_code=data['verification_code']).first()
 
         if not tg_user:
