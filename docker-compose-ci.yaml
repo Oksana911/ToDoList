@@ -29,7 +29,7 @@ services:
     volumes:
       - ./.env:/code/.env
     env_file:
-      - .docker_env
+      - .env
     depends_on:
       db:
         condition: service_healthy
