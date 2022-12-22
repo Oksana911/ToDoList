@@ -10,7 +10,7 @@ class Command(BaseCommand):
     tg_client = TgClient(TG_TOKEN)
 
     def handle_user(self, msg: Message):
-        """ Проверка наличия пользователя в БД """
+        """ Проверка наличия пользователя в БД, выдача верификационного кода новому юзеру """
         user, created = TgUser.objects.get_or_create(
             tg_user_id=msg.from_.id,
             tg_chat_id=msg.chat.id)

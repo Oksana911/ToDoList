@@ -3,7 +3,7 @@ from goals.models import BoardParticipant
 
 
 class BoardPermissions(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):  # возвращает bool есть ли доступ у пользователя
+    def has_object_permission(self, request, view, obj) -> bool:  # возвращает bool есть ли доступ у пользователя
         if not request.user.is_authenticated:
             return False
         if request.method in permissions.SAFE_METHODS:
@@ -16,7 +16,7 @@ class BoardPermissions(permissions.BasePermission):
 
 
 class GoalCategoryPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
+    def has_object_permission(self, request, view, obj) -> bool:
         if not request.user.is_authenticated:
             return False
         if request.method in permissions.SAFE_METHODS:
@@ -29,7 +29,7 @@ class GoalCategoryPermission(permissions.BasePermission):
 
 
 class GoalPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
+    def has_object_permission(self, request, view, obj) -> bool:
         if not request.user.is_authenticated:
             return False
         if request.method in permissions.SAFE_METHODS:
@@ -42,7 +42,7 @@ class GoalPermission(permissions.BasePermission):
 
 
 class CommentPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
+    def has_object_permission(self, request, view, obj) -> bool:
         if not request.user.is_authenticated:
             return False
         if request.method in permissions.SAFE_METHODS:
