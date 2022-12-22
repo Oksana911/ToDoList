@@ -25,8 +25,6 @@ class Command(BaseCommand):
         else:
             self.tg_client.send_message(chat_id=msg.chat.id, text='Ты уже был!')
 
-    # def handle_unverified_user(self, msg: Message, tg_user: TgUser):
-
     def handle(self, *args, **options):
         """ Точка входа в бот """
         offset = 0

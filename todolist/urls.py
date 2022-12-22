@@ -21,6 +21,7 @@ urlpatterns = [
     path('core/', include("core.urls")),
     path('oauth/', include("social_django.urls", namespace="social")),
     path('goals/', include("goals.urls")),
+    path('bot/', include("bot.urls")),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
