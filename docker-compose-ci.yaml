@@ -54,5 +54,17 @@ services:
       timeout: 5s
       retries: 5
 
-
+  bot:
+    image: oksana911/oefremova_mytodolist:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./.env:/code/.env
+    command: python manage.py runbot
 
