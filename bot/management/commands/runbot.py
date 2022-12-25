@@ -72,14 +72,15 @@ class Command(BaseCommand):
                 self.offset = item.update_id + 1
 
                 if item.message.text in categories_str:
-                    category = categories.filter(title=item.message.text)
+                    category = categories.filter(title=item.message.text).first()
                     self.create_goal(msg, category, tg_user)
                     flag = False
                 elif item.message.text == 'cancel':
                     self.tg_client.send_message(chat_id=msg.chat.id, text='Ты передумал? Ок :)')
                     flag = False
                 else:
-                    self.tg_client.send_message(chat_id=msg.chat.id, text='Такой категории нет')
+                    self.tg_client.send_message(chat_id=msg.chat.id,
+                                                text='Такой категории нет. Попробуй еще раз или введи cancel если передумал')
 
     def handle_user(self, msg: Message):
         """ Проверка наличия пользователя в БД, выдача верификационного кода новому юзеру """
