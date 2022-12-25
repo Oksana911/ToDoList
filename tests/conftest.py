@@ -1,10 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from core.models import User
-from goals.models import GoalCategory, Board, BoardParticipant
-
-
-# from factories import UserFactory, CategoryFactory, BoardFactory, BoardParticipantFactory
+from factories import CategoryFactory, BoardFactory, BoardParticipantFactory, GoalFactory, CommentFactory
 
 
 @pytest.fixture
@@ -21,18 +18,28 @@ def test_user(db):
 
 
 @pytest.fixture
-def category(board, test_user):
-    return GoalCategory.objects.create(user=test_user, board=board)
+def category(test_user, board, board_part):
+    return CategoryFactory.create(user=test_user, board=board)
+
+
+@pytest.fixture
+def goal(category, test_user):
+    return GoalFactory.create(category=category, user=test_user)
 
 
 @pytest.fixture
 def board():
-    return Board.objects.create()
+    return BoardFactory.create()
 
 
 @pytest.fixture
 def board_part(test_user, board):
-    return BoardParticipant.objects.create(
+    return BoardParticipantFactory.create(
         user=test_user,
         board=board,
     )
+
+
+@pytest.fixture
+def comment(goal, test_user):
+    return CommentFactory.create(goal=goal, user=test_user)

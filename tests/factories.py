@@ -2,15 +2,6 @@ import factory
 from goals.models import GoalCategory, User, Board, BoardParticipant, Goal, GoalComment
 
 
-class UserFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = User
-
-    username = factory.Faker('name')
-    password = 'CommonPassword54321'
-    email = factory.Faker('email')
-
-
 class BoardFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Board
