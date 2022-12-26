@@ -1,5 +1,5 @@
 import factory
-from goals.models import GoalCategory, User, Board, BoardParticipant, Goal, GoalComment
+from goals.models import GoalCategory, Board, BoardParticipant, Goal, GoalComment
 
 
 class BoardFactory(factory.django.DjangoModelFactory):

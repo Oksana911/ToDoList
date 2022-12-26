@@ -55,17 +55,17 @@ def test_get_one(auth_user, test_user, category, board_part, goal):
 
 @pytest.mark.django_db
 def test_get_list(auth_user, test_user, category):
-    url = reverse('goal_list')
-    response = auth_user.get(path=url)
     goals = GoalFactory.create_batch(5, category=category, user=test_user)
-    expected_response = GoalSerializer(instance=goals, many=True).data
+    url = reverse('goals_list')
+    response = auth_user.get(path=url)
+    expected_response = GoalSerializer(goals, many=True).data
 
     assert response.status_code == 200
     assert response.data == expected_response
 
 
 @pytest.mark.django_db
-def test_update(auth_user, test_user, goal, category):
+def test_update(auth_user, goal, category):
     url = reverse('goal', kwargs={'pk': goal.pk})
     response = auth_user.put(path=url, data={
         'title': 'updated goal',

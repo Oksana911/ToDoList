@@ -10,7 +10,7 @@ urlpatterns = [
     path('goal_category/<pk>', GoalCategoryView.as_view(), name='cat'),
 
     path('goal/create', GoalCreateView.as_view(), name='goal_create'),
-    path('goal/list', GoalListView.as_view(), name='goal_list'),
+    path('goal/list', GoalListView.as_view(), name='goals_list'),
     path('goal/<pk>', GoalView.as_view(), name='goal'),
 
     path('goal_comment/create', CommentCreateView.as_view(), name='comment_create'),
