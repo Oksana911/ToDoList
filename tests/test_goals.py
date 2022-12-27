@@ -1,12 +1,15 @@
 from datetime import datetime
 import pytest
 from django.urls import reverse
+from core.models import User
+from goals.models import GoalCategory, BoardParticipant, Goal
 from goals.serializers.goal import GoalSerializer
 from factories import GoalFactory
+from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
-def test_create(auth_user, category, board_part):
+def test_create(auth_user: APIClient, category: GoalCategory, board_part: BoardParticipant):
     url = reverse('goal_create')
     test_date = str(datetime.now().date())
     payload = {
@@ -26,7 +29,8 @@ def test_create(auth_user, category, board_part):
 
 
 @pytest.mark.django_db
-def test_get_one(auth_user, test_user, category, board_part, goal):
+def test_get_one(auth_user: APIClient, test_user: User, category: GoalCategory, board_part: BoardParticipant,
+                 goal: Goal):
     url = reverse('goal', kwargs={'pk': goal.pk})
     response = auth_user.get(path=url)
     response_data = response.json()
@@ -54,7 +58,7 @@ def test_get_one(auth_user, test_user, category, board_part, goal):
 
 
 @pytest.mark.django_db
-def test_get_list(auth_user, test_user, category):
+def test_get_list(auth_user: APIClient, test_user: User, category: GoalCategory):
     goals = GoalFactory.create_batch(5, category=category, user=test_user)
     expected_response = GoalSerializer(goals, many=True).data
     url = reverse('goals_list')
@@ -65,7 +69,7 @@ def test_get_list(auth_user, test_user, category):
 
 
 @pytest.mark.django_db
-def test_update(auth_user, goal, category):
+def test_update(auth_user: APIClient, goal: Goal, category: GoalCategory):
     url = reverse('goal', kwargs={'pk': goal.pk})
     response = auth_user.put(path=url, data={
         'title': 'updated goal',
@@ -77,7 +81,7 @@ def test_update(auth_user, goal, category):
 
 
 @pytest.mark.django_db
-def test_delete(auth_user, goal):
+def test_delete(auth_user: APIClient, goal: Goal):
     url = reverse('goal', kwargs={'pk': goal.pk})
     response = auth_user.delete(path=url)
 

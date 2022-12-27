@@ -1,16 +1,18 @@
 import pytest
 from rest_framework.test import APIClient
+from core.models import User
 from factories import CategoryFactory, BoardFactory, BoardParticipantFactory, GoalFactory, CommentFactory
+from goals.models import Board, BoardParticipant, GoalCategory, Goal
 
 
 @pytest.fixture
-def test_user(db, django_user_model):
+def test_user(db, django_user_model) -> User:
     user = django_user_model.objects.create_user(username='Petr', password='1234qwe4321', email='petr@petr.ru')
     return user
 
 
 @pytest.fixture
-def auth_user(test_user):
+def auth_user(test_user: User) -> APIClient:
     user = APIClient()
     user.force_authenticate(test_user)
     return user
@@ -22,7 +24,7 @@ def board():
 
 
 @pytest.fixture
-def board_part(test_user, board):
+def board_part(test_user: User, board: Board):
     return BoardParticipantFactory.create(
         user=test_user,
         board=board,
@@ -30,15 +32,15 @@ def board_part(test_user, board):
 
 
 @pytest.fixture
-def category(test_user, board, board_part):
+def category(test_user: User, board: Board, board_part: BoardParticipant):
     return CategoryFactory.create(user=test_user, board=board)
 
 
 @pytest.fixture
-def goal(category, test_user):
+def goal(category: GoalCategory, test_user: User):
     return GoalFactory.create(category=category, user=test_user)
 
 
 @pytest.fixture
-def comment(goal, test_user):
+def comment(goal: Goal, test_user: User):
     return CommentFactory.create(goal=goal, user=test_user)

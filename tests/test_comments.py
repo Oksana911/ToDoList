@@ -1,11 +1,14 @@
 import pytest
 from django.urls import reverse
+from core.models import User
 from factories import CommentFactory
+from goals.models import Goal, GoalComment
 from goals.serializers.goal_comment import CommentSerializer
+from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
-def test_create(auth_user, test_user, goal):
+def test_create(auth_user: APIClient, test_user: User, goal: Goal):
     url = reverse('comment_create')
 
     payload = {
@@ -24,7 +27,7 @@ def test_create(auth_user, test_user, goal):
 
 
 @pytest.mark.django_db
-def test_get_one(auth_user, test_user, comment, goal):
+def test_get_one(auth_user: APIClient, test_user: User, goal: Goal, comment: GoalComment):
     url = reverse('comment', kwargs={'pk': comment.pk})
     response = auth_user.get(path=url)
     response_data = response.json()
@@ -47,7 +50,7 @@ def test_get_one(auth_user, test_user, comment, goal):
 
 
 @pytest.mark.django_db
-def test_get_list(auth_user, test_user, goal):
+def test_get_list(auth_user: APIClient, test_user: User, goal: Goal):
     comments = CommentFactory.create_batch(5, user=test_user, goal=goal)
     expected_response = CommentSerializer(instance=comments, many=True).data
     expected_response_sort = sorted(expected_response, key=lambda x: x['id'], reverse=True)
@@ -59,7 +62,7 @@ def test_get_list(auth_user, test_user, goal):
 
 
 @pytest.mark.django_db
-def test_update(auth_user, comment, goal):
+def test_update(auth_user: APIClient, goal: Goal, comment: GoalComment):
     url = reverse('comment', kwargs={'pk': comment.pk})
     response = auth_user.put(path=url, data={
         'text': 'updated comment',
@@ -71,7 +74,7 @@ def test_update(auth_user, comment, goal):
 
 
 @pytest.mark.django_db
-def test_delete(auth_user, comment):
+def test_delete(auth_user: APIClient, comment: GoalComment):
     url = reverse('comment', kwargs={'pk': comment.pk})
     response = auth_user.delete(path=url)
 
