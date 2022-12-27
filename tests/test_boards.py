@@ -1,7 +1,9 @@
+import json
+
 import pytest
 from django.urls import reverse
-from factories import BoardFactory
-from goals.serializers.board import BoardSerializer
+from factories import BoardFactory, BoardParticipantFactory
+from goals.serializers.board import BoardSerializer, BoardListSerializer
 
 
 @pytest.mark.django_db
@@ -33,11 +35,15 @@ def test_get_one(auth_user, test_user, board, board_part):
 
 @pytest.mark.django_db
 def test_get_list(auth_user, test_user, board):
-    boards = BoardFactory.create_batch(5)
-    expected_response = BoardSerializer(boards, many=True).data
+    participant = BoardParticipantFactory.create(board=board, user=test_user)
 
-    url = reverse('boards_list')
-    response = auth_user.get(path=url)
+    response = auth_user.get(f"{reverse('boards_list')}?limit=1")
+    expected_response = {
+        'count': 1,
+        'next': None,
+        'previous': None,
+        'results': BoardListSerializer(instance=(board,), many=True).data
+    }
 
     assert response.status_code == 200
     assert response.data == expected_response
@@ -45,12 +51,9 @@ def test_get_list(auth_user, test_user, board):
 
 @pytest.mark.django_db
 def test_update(auth_user, test_user, board, board_part):
-    url = reverse('board', kwargs={'pk': board.pk})
-    response = auth_user.put(path=url, data={
-        'title': 'updated board',
-        'participants': board.board_part,
-    })
-
+    response = auth_user.put(reverse('board', kwargs={'pk': board.pk}),
+                               data=json.dumps({"title": "updated board", "participants": []}),
+                               content_type="application/json")
     assert response.status_code == 200
     assert response.data.get('title') == 'updated board'
 
