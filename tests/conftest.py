@@ -17,16 +17,6 @@ def auth_user(test_user):
 
 
 @pytest.fixture
-def category(test_user, board, board_part):
-    return CategoryFactory.create(user=test_user, board=board)
-
-
-@pytest.fixture
-def goal(category, test_user):
-    return GoalFactory.create(category=category, user=test_user)
-
-
-@pytest.fixture
 def board():
     return BoardFactory.create()
 
@@ -37,6 +27,16 @@ def board_part(test_user, board):
         user=test_user,
         board=board,
     )
+
+
+@pytest.fixture
+def category(test_user, board, board_part):
+    return CategoryFactory.create(user=test_user, board=board)
+
+
+@pytest.fixture
+def goal(category, test_user):
+    return GoalFactory.create(category=category, user=test_user)
 
 
 @pytest.fixture

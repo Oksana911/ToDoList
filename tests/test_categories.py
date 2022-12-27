@@ -48,14 +48,17 @@ def test_get_one(auth_user, test_user, category, board):
 
 
 @pytest.mark.django_db
-def test_get_list(auth_user, test_user, board):
+def test_get_list(auth_user, test_user, board, board_part):
     categories = CategoryFactory.create_batch(5, user=test_user, board=board)
-    expected_response = GoalCategorySerializer(categories, many=True).data
-    url = reverse('cat_list')
-    response = auth_user.get(path=url)
+    expected_response = GoalCategorySerializer(instance=categories, many=True).data
+    expected_response_sort = sorted(expected_response, key=lambda x: x['created'])
+    expected_response_sort = sorted(expected_response_sort, key=lambda x: x['title'])
+
+    response = auth_user.get(reverse('cat_list'))
 
     assert response.status_code == 200
-    assert response.data == expected_response
+    assert response.data == expected_response_sort
+
 
 
 @pytest.mark.django_db
