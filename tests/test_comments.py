@@ -49,13 +49,13 @@ def test_get_one(auth_user, test_user, comment, goal):
 @pytest.mark.django_db
 def test_get_list(auth_user, test_user, goal):
     comments = CommentFactory.create_batch(5, user=test_user, goal=goal)
-    expected_response = CommentSerializer(comments, many=True).data
+    expected_response = CommentSerializer(instance=comments, many=True).data
+    expected_response_sort = sorted(expected_response, key=lambda x: x['id'], reverse=True)
     url = reverse('comments_list')
     response = auth_user.get(path=url)
 
-
     assert response.status_code == 200
-    assert response.data == expected_response
+    assert response.data == expected_response_sort
 
 
 @pytest.mark.django_db
