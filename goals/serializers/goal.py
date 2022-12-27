@@ -12,7 +12,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id', 'created', 'updated', 'user')
 
-    def validate(self, value):
+    def validate(self, value: dict):
         role_use = BoardParticipant.objects.filter(
             user=value.get('user'),
             board=value.get('category').board,

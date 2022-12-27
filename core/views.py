@@ -17,7 +17,7 @@ class LoginView(GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -30,10 +30,10 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user
 
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs) -> Response:
         logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -43,5 +43,5 @@ class UpdatePasswordView(UpdateAPIView):
     serializer_class = UpdatePasswordSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user
