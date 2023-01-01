@@ -43,7 +43,7 @@ class Message:
 @dataclass
 class UpdateObj:
     update_id: int
-    message: Message
+    message: Message | None
 
     class Meta:
         unknown = EXCLUDE
